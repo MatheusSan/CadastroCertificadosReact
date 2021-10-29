@@ -13,16 +13,31 @@ const Background = styled.div`
   width: 100%;
   min-height: 100vh;
   padding: 50px 0;
+  @media(max-width: 650px) {
+    padding: 0;
+  }
 `;
 const Fundo = styled.div`
   max-width: 70%;
   min-height: calc(80vh - 46px);
-  width: 100%;
-  height: 100%;
   background-color: #FFF;
   margin: auto;
   border-radius: 20px;
   padding: 45px;
+  @media(max-width: 650px) {
+    min-width: 100%;
+    padding: 15px;
+  }
+  @media(min-width: 1440px) {
+    min-width: 50%;
+    min-height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-top: 25px;
+    padding-bottom: 0px;
+  }
 `;
 const Text = styled.h2`
   font-size: 24px;

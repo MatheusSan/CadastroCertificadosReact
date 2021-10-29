@@ -33,9 +33,9 @@ const DivInput = styled.div`
   align-items: center;
 `;
 const ButtonHeart = styled.button`
-  background-color: transparent;
+  background-color: ${Colors.white};
   border: none;
-  height: 40px;
+  height: 35px;
   margin-right: 5px;
   cursor: pointer;
   display: flex;

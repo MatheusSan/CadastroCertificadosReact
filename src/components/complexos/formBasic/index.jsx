@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaAngleRight } from "react-icons/fa";
 import styled from "styled-components";
 
@@ -26,6 +26,7 @@ const Text = styled.h2`
 `;
 
 function FormBasic() {
+  const [firstMounting, setFirstMounting] = useState(false);
   const { validationWithName, haveError } = useContext(ValidationsContext);
   const { nextStateForm } = useContext(StateFormContext);
   const {
@@ -66,15 +67,14 @@ function FormBasic() {
   var days = [];
   var years = [];
 
-  function submitForm(event) {
+  async function submitForm(event) {
     event.preventDefault();
-    validationWithName("checkbox", checked, 'terms');
     if (
       !haveError() &&
-      name !== "" &&
-      email !== "" &&
-      checked === true &&
-      age !== ""
+      validationWithName("checkbox", checked, "terms") &&
+      validationWithName("empty", name, "name") &&
+      validationWithName("empty", email, "email") &&
+      validationWithName("empty", age, "age")
     ) {
       nextStateForm();
     }
@@ -93,13 +93,21 @@ function FormBasic() {
   useEffect(() => {
     if (day && month && year) {
       setAge(
-        (
-          new Date().getFullYear() -
-          new Date(`${month} ${day}, ${year} 00:00:00 `).getFullYear()
+        Math.trunc(
+          (new Date().getTime() -
+            new Date(`${month} ${day}, ${year}`).getTime()) /
+            (1000 * 60 * 60 * 24 * 365)
         ).toString()
       );
     }
   }, [day, month, year]);
+
+  useEffect(() =>{
+    if (firstMounting){
+      validationWithName("empty", age, "age");
+    }
+    setFirstMounting(true);
+  }, [age]);
 
   return (
     <form onSubmit={submitForm}>
@@ -126,6 +134,9 @@ function FormBasic() {
         required={false}
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
+        validation={(e) =>
+          validationWithName("empty", e.target.value, e.target.name)
+        }
       />
 
       <Division>
@@ -210,16 +221,19 @@ function FormBasic() {
         texto="I accept the terms and privacy"
         name="terms"
         value={checked}
-        onChange={(e) => [setChecked(!checked), validationWithName("checkbox", e.target.checked, e.target.name)]}
+        onChange={(e) => [
+          setChecked(!checked),
+          validationWithName("checkbox", e.target.checked, e.target.name),
+        ]}
       />
 
       <Button
-        texto={
+        text={
           <React.Fragment>
             Next <FaAngleRight />
           </React.Fragment>
         }
-        tipo="submit"
+        type="submit"
       />
     </form>
   );

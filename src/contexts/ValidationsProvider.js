@@ -1,52 +1,56 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 export const ValidationsContext = createContext({});
 
 export const ValidationsProvider = ({ children }) => {
   const [erros, setErros] = useState({});
 
+  useEffect(()=>{
+    console.log(erros);
+  },[erros]);
+
   function validationWithName(action, value, name) {
+    let valid = false;
     switch (action) {
       case "empty":
-        empty(name, value);
+        valid = empty(name, value);
         break;
       case "numberMinimum":
-        numberMinimum(name, value);
+        valid = numberMinimum(name, value);
         break;
       case "complete":
-        isComplete(name, value);
+        valid = isComplete(name, value);
         break;
       case "checkbox":
-        isTrue(name, value);
+        valid = isTrue(name, value);
         break;
       default:
         console.log("Essa validação não existe");
         break;
     }
+    return valid;
   }
 
   function empty(name, e) {
     let err = "";
     if (e.length === 0 || e === " ") {
-      err = `Campo ${name} é obrigatório!`;
-    } else {
-      err = "";
+      err = `${name} field is required!`;
     }
     setErros((prevEvent) => {
       return { ...prevEvent, [name]: err };
     });
+    return err === "" ? true : false;
   }
 
   function numberMinimum(name, e) {
     let err = "";
     if (e.length <= 6) {
-      err = `Campo ${name} precisa ter mais de 6 dígitos!`;
-    } else {
-      err = "";
+      err = `${name} field must be longer than 6 digits!`;
     }
     setErros((prevEvent) => {
       return { ...prevEvent, [name]: err };
     });
+    return err === "" ? true : false;
   }
 
   function isComplete(name, value) {
@@ -78,26 +82,23 @@ export const ValidationsProvider = ({ children }) => {
         break;
     }
     if (args !== "" && value !== "" && !verificaString(value, args)) {
-      err = `Campo ${name} precisa estar completo!`;
-    } else {
-      err = "";
+      err = `Field ${name} must be complete!`;
     }
     setErros((prevEvent) => {
       return { ...prevEvent, [name]: err };
     });
+    return err === "" ? true : false;
   }
 
   function isTrue(name, value) {
-    console.log(value);
     let err = "";
     if (!value) {
-      err = "Os termos precisam ser aceitos";
-    } else {
-      err = "";
+      err = "Terms need to be accepted";
     }
     setErros((prevEvent) => {
       return { ...prevEvent, [name]: err };
     });
+    return err === "" ? true : false;
   }
 
   function haveError() {

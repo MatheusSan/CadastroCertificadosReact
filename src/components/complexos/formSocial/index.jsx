@@ -14,7 +14,10 @@ function FormSocial() {
 
   function submitForm(event) {
     event.preventDefault();
-    if (!haveError() && github !== "") {
+    if (
+      !haveError() &&
+      validationWithName("empty", github, github)
+    ) {
       nextStateForm();
     }
   }
@@ -43,18 +46,19 @@ function FormSocial() {
         required
         value={github}
         onChange={(e) => setGithub(e.target.value)}
-        validation={(e) =>
-          validationWithName("complete", e.target.value, e.target.name)
-        }
+        validation={(e) => [
+          validationWithName("empty", e.target.value, e.target.name),
+          validationWithName("complete", e.target.value, e.target.name),
+        ]}
       />
 
       <Button
-        texto={
+        text={
           <React.Fragment>
             Next <FaAngleRight />
           </React.Fragment>
         }
-        tipo="submit"
+        type="submit"
       />
     </form>
   );
