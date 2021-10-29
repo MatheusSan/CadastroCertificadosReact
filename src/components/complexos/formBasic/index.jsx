@@ -1,23 +1,54 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { FaAngleRight } from "react-icons/fa";
+import styled from "styled-components";
 
+import Colors from "../../../assets/Colors";
 import Input from "../../simples/input";
 import Select from "../../simples/select";
 import Checkbox from "../../simples/checkbox";
 import Button from "../../simples/button";
 import { ValidationsContext } from "../../../contexts/ValidationsProvider";
+import { StateFormContext } from "../../../contexts/StateFormProvider";
+import { InfosContext } from "../../../contexts/InfosProvider";
+
+const Division = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: -30px 0;
+`;
+const Text = styled.h2`
+  font-size: 18px;
+  line-height: 16px;
+  color: ${Colors.grayDarkText};
+  font-weight: 400;
+  margin: 30px 0 10px 0;
+`;
 
 function FormBasic() {
-  const { validationWithName } = useContext(ValidationsContext);
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [age, setAge] = useState("");
-  const [checked, setChecked] = useState(false);
+  const { validationWithName, haveError } = useContext(ValidationsContext);
+  const { nextStateForm } = useContext(StateFormContext);
+  const {
+    name,
+    setName,
+    nickname,
+    setNickname,
+    email,
+    setEmail,
+    phone,
+    setPhone,
+    day,
+    setDay,
+    month,
+    setMonth,
+    year,
+    setYear,
+    age,
+    setAge,
+    checked,
+    setChecked,
+  } = useContext(InfosContext);
+
   const months = [
     "January",
     "February",
@@ -37,7 +68,16 @@ function FormBasic() {
 
   function submitForm(event) {
     event.preventDefault();
-    console.log("Submeter form");
+    validationWithName("checkbox", checked, 'terms');
+    if (
+      !haveError() &&
+      name !== "" &&
+      email !== "" &&
+      checked === true &&
+      age !== ""
+    ) {
+      nextStateForm();
+    }
   }
 
   for (let i = 1; i <= 31; i++) {
@@ -86,81 +126,91 @@ function FormBasic() {
         required={false}
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
-        validation={(e) => validationWithName(e.target.name, e.target.value)}
       />
 
-      <Input
-        name="email"
-        text="Email *"
-        type="email"
-        placeHolder="foo@bar.com"
-        id="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        validation={(e) => validationWithName(e.target.name, e.target.value)}
-      />
-      <Input
-        name="phone"
-        text="Phone"
-        type="text"
-        placeHolder="(83) 00000-0000"
-        id="phone"
-        required={false}
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
+      <Division>
+        <Input
+          name="email"
+          text="Email *"
+          type="email"
+          placeHolder="foo@bar.com"
+          id="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          validation={(e) => [
+            validationWithName("empty", e.target.value, e.target.name),
+            validationWithName("complete", e.target.value, e.target.name),
+          ]}
+          width="50%"
+        />
+        <Input
+          name="phone"
+          text="Phone"
+          type="text"
+          placeHolder="(83) 00000-0000"
+          id="phone"
+          required={false}
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          width="45%"
+        />
+      </Division>
 
-      <Select
-        name="day"
-        text="Day"
-        type="text"
-        placeHolder=""
-        id="day"
-        required
-        onChange={(e) => setDay(e.target.value)}
-        value={day}
-        options={days}
-      />
-      <Select
-        name="month"
-        text="Month"
-        type="text"
-        placeHolder="Foo Bar"
-        id="month"
-        required
-        onChange={(e) => setMonth(e.target.value)}
-        value={month}
-        options={months}
-      />
-      <Select
-        name="year"
-        text="Year"
-        type="text"
-        placeHolder="Foo Bar"
-        id="year"
-        required
-        onChange={(e) => setYear(e.target.value)}
-        value={year}
-        options={years}
-      />
-      <Input
-        name="age"
-        text="Age"
-        type="text"
-        readonly
-        placeHolder="18"
-        id="age"
-        required
-        value={age}
-      />
+      <Text>Birthday *</Text>
+      <Division>
+        <Select
+          name="day"
+          text="Day"
+          type="text"
+          id="day"
+          required
+          onChange={(e) => setDay(e.target.value)}
+          value={day}
+          options={days}
+          width="23%"
+        />
+        <Select
+          name="month"
+          text="Month"
+          type="text"
+          id="month"
+          required
+          onChange={(e) => setMonth(e.target.value)}
+          value={month}
+          options={months}
+          width="23%"
+        />
+        <Select
+          name="year"
+          text="Year"
+          type="text"
+          id="year"
+          required
+          onChange={(e) => setYear(e.target.value)}
+          value={year}
+          options={years}
+          width="23%"
+        />
+        <Input
+          name="age"
+          text="Age"
+          type="text"
+          readonly
+          placeHolder="18"
+          id="age"
+          required
+          value={age}
+          width="23%"
+        />
+      </Division>
 
       <Checkbox
         id="terms"
         texto="I accept the terms and privacy"
-        nome="Terms"
+        name="terms"
         value={checked}
-        onChange={() => setChecked(!checked)}
+        onChange={(e) => [setChecked(!checked), validationWithName("checkbox", e.target.checked, e.target.name)]}
       />
 
       <Button

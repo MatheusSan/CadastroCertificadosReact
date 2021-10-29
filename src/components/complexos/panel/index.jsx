@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import { StateFormContext } from '../../../contexts/StateFormProvider';
 import FormBasic from '../formBasic';
+import FormSocial from '../formSocial';
+import FormCertificates from '../formCertificates';
 import Tabs from '../tabs';
 
 const Background = styled.div`
@@ -29,12 +32,21 @@ const Text = styled.h2`
 `;
 
 function Panel() {
+  const { stateForm } = useContext(StateFormContext);
+
   return (
     <Background>
       <Fundo>
         <Text>Team Sign Up</Text>
         <Tabs/>
-        <FormBasic/>
+        {stateForm === 0 ? (
+          <FormBasic/>
+        ) :
+        stateForm === 1 ? (
+          <FormSocial/>
+        ) : (
+          <FormCertificates/>
+        )}
       </Fundo>
     </Background>
   );

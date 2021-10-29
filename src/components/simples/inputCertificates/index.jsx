@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 import Colors from "../../../assets/Colors";
 import { ValidationsContext } from "../../../contexts/ValidationsProvider";
@@ -26,6 +27,21 @@ const Aviso = styled.p`
   color: ${Colors.alert};
   position: absolute;
 `;
+const DivInput = styled.div`
+  display: flex;
+  flex-flow: row-reverse;
+  align-items: center;
+`;
+const ButtonHeart = styled.button`
+  background-color: transparent;
+  border: none;
+  height: 40px;
+  margin-right: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: absolute;
+`;
 
 export default function InputMy({
   text,
@@ -35,29 +51,38 @@ export default function InputMy({
   required,
   id,
   onChange,
-  readonly,
   value,
   validation,
-  width
+  width,
+  fav,
+  onFavorite
 }) {
   const { erros } = useContext(ValidationsContext);
 
   return (
     <FormBox width={width}>
       <Texto>{text}</Texto>
-      <Input
-        id={id}
-        type={type}
-        name={name}
-        placeholder={placeHolder}
-        value={value}
-        onChange={onChange}
-        required={required}
-        readOnly={readonly}
-        onBlur={validation}
-      />
-      {erros[name] !== "" && (
-        <Aviso>{erros[name]}</Aviso>
+      <DivInput>
+        <Input
+          id={id}
+          type={type}
+          name={name}
+          placeholder={placeHolder}
+          value={value}
+          onChange={onChange}
+          required={required}
+          onBlur={validation}
+        />
+        <ButtonHeart onClick={onFavorite} type="button">
+          {fav ? (
+            <FaHeart size={25}/>            
+            ) : (
+            <FaRegHeart size={25}/>
+          )}
+        </ButtonHeart>
+      </DivInput>
+      {erros[id] !== "" && (
+        <Aviso>{erros[id]}</Aviso>
       )}
     </FormBox>
   );

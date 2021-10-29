@@ -17,12 +17,15 @@ const Button = styled.button`
   color: ${Colors.white};
   border-radius: 4px;
   padding: 10px;
+  &:active {
+    background-color: ${Colors.primaryDark};
+  }
 `;
 
-export default function InputMy({ texto, nome, tipo, id, }) {
+export default function InputMy({ texto, nome, tipo, id, onClick }) {
   return (
     <FormBox>
-      <Button id={id} type={tipo} name={nome}>
+      <Button id={id} type={tipo} name={nome} onClick={onClick}>
         {texto}
       </Button>
     </FormBox>
