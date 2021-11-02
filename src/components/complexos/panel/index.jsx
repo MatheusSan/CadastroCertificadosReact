@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 
 import { StateFormContext } from '../../../contexts/StateFormProvider';
+import { InfosContext } from "../../../contexts/InfosProvider";
 import FormBasic from '../formBasic';
 import FormSocial from '../formSocial';
 import FormCertificates from '../formCertificates';
+import PopupFinish from "../popupFinish";
 import Tabs from '../tabs';
 
 const Background = styled.div`
@@ -47,7 +49,8 @@ const Text = styled.h2`
 `;
 
 function Panel() {
-  const { stateForm } = useContext(StateFormContext);
+  const { stateForm, nextStateForm, finish, setFinish } = useContext(StateFormContext);
+  const { cleanForms } = useContext(InfosContext);
 
   return (
     <Background>
@@ -63,6 +66,7 @@ function Panel() {
           <FormCertificates/>
         )}
       </Fundo>
+      {finish && <PopupFinish onClick={() => [nextStateForm(), setFinish(false), cleanForms()]}/>}
     </Background>
   );
 }

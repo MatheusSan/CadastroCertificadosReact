@@ -134,9 +134,6 @@ function FormBasic() {
         required={false}
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
-        validation={(e) =>
-          validationWithName("empty", e.target.value, e.target.name)
-        }
       />
 
       <Division>

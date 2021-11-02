@@ -10,7 +10,7 @@ import { InfosContext } from "../../../contexts/InfosProvider";
 
 function FormCertificates() {
   const { validationWithName, haveError } = useContext(ValidationsContext);
-  const { nextStateForm } = useContext(StateFormContext);
+  const { setFinish } = useContext(StateFormContext);
   const {
     certificates,
     setCertificates,
@@ -30,7 +30,7 @@ function FormCertificates() {
       validationWithName("empty", institution, "institution") &&
       validationWithName("empty", graduation, "graduation")
     ) {
-      nextStateForm(); //TODO: Fazer tela de exibção dos dados
+      setFinish(true);
     }
   }
   function moreCertificates() {
@@ -50,90 +50,92 @@ function FormCertificates() {
   }
 
   return (
-    <form onSubmit={submitForm}>
-      {certificates.map((value, index) => {
-        return (
-          <InputCertificates
-            key={index}
-            name="certificates"
-            text="Certificates"
-            type="text"
-            placeHolder="https://www.linkedin.com/in/foo-bar-3a0560104/"
-            id={`certificates-${index + 1}`}
-            required={false}
-            value={value.text}
-            fav={value.fav}
-            onFavorite={() => favorite(index)}
-            onChange={(e) => modifyCertificates(index, e.target.value)}
-            validation={(e) =>
-              validationWithName("complete", e.target.value, e.target.id)
+    <React.Fragment>
+      <form onSubmit={submitForm}>
+        {certificates.map((value, index) => {
+          return (
+            <InputCertificates
+              key={index}
+              name="certificates"
+              text="Certificates"
+              type="text"
+              placeHolder="https://www.linkedin.com/in/foo-bar-3a0560104/"
+              id={`certificates-${index + 1}`}
+              required={false}
+              value={value.text}
+              fav={value.fav}
+              onFavorite={() => favorite(index)}
+              onChange={(e) => modifyCertificates(index, e.target.value)}
+              validation={(e) =>
+                validationWithName("complete", e.target.value, e.target.id)
+              }
+            />
+          );
+        })}
+        {certificates.length < 5 && certificates[certificates.length - 1].text !== "" && (
+          <Button
+            text={
+              <React.Fragment>
+                <FaPlus style={{ marginRight: 5 }} /> More
+              </React.Fragment>
             }
+            onClick={moreCertificates}
+            type="button"
           />
-        );
-      })}
-      {certificates.length < 5 && (
+        )}
+        <Input
+          name="team name"
+          text="Team Name *"
+          type="text"
+          placeHolder="https://www.linkedin.com/in/foo-bar-3a0560104/"
+          id="teamName"
+          required
+          value={teamName}
+          onChange={(e) => setTeamName(e.target.value)}
+          validation={(e) => [
+            validationWithName("empty", e.target.value, e.target.name),
+            validationWithName("complete", e.target.value, e.target.name),
+          ]}
+        />
+        <Input
+          name="institution"
+          text="Institution *"
+          type="text"
+          placeHolder="Universidade Federal da Paraíba"
+          id="institution"
+          required
+          value={institution}
+          onChange={(e) => setInstitution(e.target.value)}
+          validation={(e) => [
+            validationWithName("empty", e.target.value, e.target.name),
+            validationWithName("complete", e.target.value, e.target.name),
+          ]}
+        />
+        <Input
+          name="graduation"
+          text="Graduation *"
+          type="text"
+          placeHolder="Ciência da Computação"
+          id="graduation"
+          required
+          value={graduation}
+          onChange={(e) => setGraduation(e.target.value)}
+          validation={(e) => [
+            validationWithName("empty", e.target.value, e.target.name),
+            validationWithName("complete", e.target.value, e.target.name),
+          ]}
+        />
+
         <Button
           text={
             <React.Fragment>
-              <FaPlus style={{ marginRight: 5 }} /> More
+              <FaCheck style={{ marginRight: 5 }} /> Finish
             </React.Fragment>
           }
-          onClick={moreCertificates}
-          type="button"
+          type="submit"
         />
-      )}
-      <Input
-        name="team name"
-        text="Team Name *"
-        type="text"
-        placeHolder="https://www.linkedin.com/in/foo-bar-3a0560104/"
-        id="teamName"
-        required
-        value={teamName}
-        onChange={(e) => setTeamName(e.target.value)}
-        validation={(e) => [
-          validationWithName("empty", e.target.value, e.target.name),
-          validationWithName("complete", e.target.value, e.target.name),
-        ]}
-      />
-      <Input
-        name="institution"
-        text="Institution *"
-        type="text"
-        placeHolder="Universidade Federal da Paraíba"
-        id="institution"
-        required
-        value={institution}
-        onChange={(e) => setInstitution(e.target.value)}
-        validation={(e) => [
-          validationWithName("empty", e.target.value, e.target.name),
-          validationWithName("complete", e.target.value, e.target.name),
-        ]}
-      />
-      <Input
-        name="graduation"
-        text="Graduation *"
-        type="text"
-        placeHolder="Ciência da Computação"
-        id="graduation"
-        required
-        value={graduation}
-        onChange={(e) => setGraduation(e.target.value)}
-        validation={(e) => [
-          validationWithName("empty", e.target.value, e.target.name),
-          validationWithName("complete", e.target.value, e.target.name),
-        ]}
-      />
-
-      <Button
-        text={
-          <React.Fragment>
-            <FaCheck style={{ marginRight: 5 }} /> Finish
-          </React.Fragment>
-        }
-        type="submit"
-      />
-    </form>
+      </form>
+    </React.Fragment>
   );
 }
 

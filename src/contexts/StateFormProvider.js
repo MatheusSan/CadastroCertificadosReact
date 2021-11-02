@@ -8,6 +8,7 @@ export const StateFormProvider = ({ children }) => {
   const { haveError } = useContext(ValidationsContext);
   const { name, email, age, checked, github } = useContext(InfosContext);
   const [stateForm, setStateForm] = useState(0);
+  const [finish, setFinish] = useState(false);
 
   function nextStateForm() {
     setStateForm(stateForm + 1);
@@ -40,6 +41,8 @@ export const StateFormProvider = ({ children }) => {
         nextStateForm,
         setStateManualy,
         setStateForm,
+        finish,
+        setFinish,
       }}
     >
       {children}

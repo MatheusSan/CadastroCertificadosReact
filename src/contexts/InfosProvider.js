@@ -17,10 +17,28 @@ export const InfosProvider = ({ children }) => {
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
   //Third Tab
-  const [certificates, setCertificates] = useState([{fav: false, text: ""}]);
+  const [certificates, setCertificates] = useState([{ fav: false, text: "" }]);
   const [teamName, setTeamName] = useState("");
   const [institution, setInstitution] = useState("");
   const [graduation, setGraduation] = useState("");
+
+  function cleanForms() {
+    setName("");
+    setNickname("");
+    setEmail("");
+    setPhone("");
+    setDay("");
+    setMonth("");
+    setYear("");
+    setAge("");
+    setChecked(false);
+    setLinkedin("");
+    setGithub("");
+    setCertificates([{ fav: false, text: "" }]);
+    setTeamName("");
+    setInstitution("");
+    setGraduation("");
+  }
 
   return (
     <InfosContext.Provider
@@ -55,6 +73,7 @@ export const InfosProvider = ({ children }) => {
         setInstitution,
         graduation,
         setGraduation,
+        cleanForms,
       }}
     >
       {children}

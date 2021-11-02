@@ -1,13 +1,10 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 
 export const ValidationsContext = createContext({});
 
 export const ValidationsProvider = ({ children }) => {
   const [erros, setErros] = useState({});
 
-  useEffect(()=>{
-    console.log(erros);
-  },[erros]);
 
   function validationWithName(action, value, name) {
     let valid = false;
@@ -34,7 +31,11 @@ export const ValidationsProvider = ({ children }) => {
   function empty(name, e) {
     let err = "";
     if (e.length === 0 || e === " ") {
-      err = `${name} field is required!`;
+      if (name === 'age'){
+        err = `inform your age!`;
+      } else {
+        err = `${name} field is required!`;
+      }
     }
     setErros((prevEvent) => {
       return { ...prevEvent, [name]: err };

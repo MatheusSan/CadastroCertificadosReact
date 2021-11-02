@@ -17,6 +17,7 @@ const Input = styled.input`
   width: 100%;
   height: 40px;
   padding-left: 10px;
+  padding-right: 40px;
 `;
 const Texto = styled.p`
   font-size: 14px;
@@ -33,7 +34,7 @@ const DivInput = styled.div`
   align-items: center;
 `;
 const ButtonHeart = styled.button`
-  background-color: ${Colors.white};
+  background-color: transparent;
   border: none;
   height: 35px;
   margin-right: 5px;
