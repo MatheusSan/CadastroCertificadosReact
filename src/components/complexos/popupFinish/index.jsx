@@ -18,17 +18,18 @@ const Background = styled.div`
 const Fundo = styled.div`
   max-width: 70%;
   min-height: 50vh;
-  max-height: 100vh;
+  max-height: calc(100vh - 100px);
   background-color: ${Colors.primary};
   color: ${Colors.white};
   margin: auto;
+  border: solid 8px ${Colors.primary};
   border-radius: 20px;
-  padding: 45px;
+  padding: 25px;
   overflow: auto;
+  word-break: break-word;
   @media (max-width: 650px) {
     min-width: 100%;
-    max-height: 70vh;
-    padding: 15px;
+    padding: 5px;
   }
   @media (min-width: 1440px) {
     min-width: 50%;
@@ -119,12 +120,14 @@ function popupFinish({ onClick }) {
         <Title>Professional data</Title>
         {linkedin !== "" && <Text>Linkedin: {linkedin}</Text>}
         <Text>GitHub: {github}</Text>
-        {haveCertificates &&
-          (<Title>Certificates</Title>)(
-            certificatesOrdered.map((value, index) => {
+        {haveCertificates && (
+          <React.Fragment>
+            <Title>Certificates</Title>
+            {certificatesOrdered.map((value, index) => {
               return <Text key={index}>• {value.text}</Text>;
-            })
-          )}
+            })}
+          </React.Fragment>
+        )}
         <Title>Academic data</Title>
         <Text>{teamName}</Text>
         <Text>Institution: {institution}</Text>
