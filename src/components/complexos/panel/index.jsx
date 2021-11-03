@@ -31,14 +31,7 @@ const Fundo = styled.div`
     padding: 15px;
   }
   @media(min-width: 1440px) {
-    min-width: 50%;
     min-height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding-top: 25px;
-    padding-bottom: 0px;
   }
 `;
 const Text = styled.h2`
